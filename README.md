@@ -3,7 +3,7 @@
 ## Purpose of the project
 The goal of this project is to have a first approach to artificial neural networks and implement the heart of the process. For that, I use the Wisconsin Diagnostic Breast Cancer dataset and I will try to predict if a given patient's tumor is benign or malignant.
 
-Let's first explain the project as a whole and then dive into the mathematical foundation behind it.
+Let's first explain the project as a whole and then dive into the mathematical foundations behind it.
 
 ## Description of the dataset
 
@@ -25,7 +25,7 @@ For each of these 10 characteristics, three statistical values are recorded per 
 * **`_se`**: The standard error of the measurements.
 * **`_worst`**: The mean of the three largest (most severe) values.
 
-As illustrated in the pairplot above, malignant tumors (`M`) typically exhibit larger cell nuclei (`radius`, `perimeter`, `area`) and greater contour irregularity (`concavity`, `concave_points`) compared to benign tumors (`B`). While the two classes form distinct clusters, the overlapping regions justify using a **Multilayer Perceptron** to model non-linear decision boundaries :
+As illustrated in the pairplot above, malignant tumors (`M`) typically exhibit larger cell nuclei (`radius`, `perimeter`, `area`) and greater contour irregularity (`concavity`, `concave_points`) compared to benign tumors (`B`). While the two classes form distinct clusters, the overlapping regions justify using a **Multilayer Perceptron** to model non-linear decision boundaries:
 
 <img width="1065" height="739" alt="Non-linear overlapping features pairplot" src="https://github.com/user-attachments/assets/a3f4bb2c-bbc0-468f-adf6-876b2035779c" />
 
@@ -88,7 +88,7 @@ This project uses [uv](https://github.com/astral-sh/uv) for dependency managemen
 
 ## Results
 
-Configured with a **`30 -> 24 -> 16 -> 2`** architecture (30 input features, two hidden layers of 24 and 16 neurons, and 2 output classes) and trained using **Adam** (`lr = 0.001`, `batch_size = 32`) with Early Stopping (`patience = 10`), the model converges smoothly without overfitting, reaching its lowest validation loss at **epoch 42** before overfitting at **epoch 52**.
+Configured with a **`30 -> 24 -> 16 -> 2`** architecture (30 input features, two hidden layers of 24 and 16 neurons, and 2 output classes) and trained using **Adam** (`lr = 0.001`, `batch_size = 32`) with Early Stopping (`patience = 10`), the model converges smoothly without overfitting, reaching its lowest validation loss at **epoch 42**.
 
 ### Performance Metrics (Validation Set — 115 samples)
 
@@ -103,8 +103,10 @@ Configured with a **`30 -> 24 -> 16 -> 2`** architecture (30 input features, two
 
 ### Learning Curves
 
+**Without Adam (Standard SGD):**
 <img width="1382" height="481" alt="Training and Validation Loss and Accuracy Curves without Adam" src="https://github.com/user-attachments/assets/261d4a61-383b-4421-9533-d27c80c1f135" />
 
+**With Adam (`lr = 0.001`):**
 <img width="1384" height="484" alt="Training and Validation Loss and Accuracy Curves with Adam" src="https://github.com/user-attachments/assets/b1d4a0bb-54c3-4f63-9bf5-16e83ba90123" />
 
 * **Loss & Accuracy Alignment**: Both training and validation curves decrease and plateau together, confirming strong generalization on unseen patient data.
