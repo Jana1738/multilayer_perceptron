@@ -50,5 +50,63 @@ The network is implemented entirely from scratch in Python using **NumPy**, with
 * **Regularization & Generalization**: Built-in **Early Stopping** that monitors validation loss and automatically restores the best model weights to prevent overfitting.
 * **Evaluation & Visualization**: Tracks loss, accuracy, precision, recall, and F1-score, and generates training and validation history curves using **Matplotlib**.
 
+## Installation & Usage
 
+### Prerequisites
+
+This project uses [uv](https://github.com/astral-sh/uv) for dependency management (Python 3.10+).
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Jana1738/multilayer_perceptron.git
+   cd multilayer_perceptron
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   uv sync
+   ```
+
+### Running the Pipeline
+
+1. **Split the dataset** into training (80%) and validation (20%) sets:
+   ```bash
+   uv run src/separate.py datasets/data.csv
+   ```
+
+2. **Train the model** (with early stopping, metrics logging, and learning curves):
+   ```bash
+   uv run src/train.py datasets/data_training.csv datasets/data_validation.csv
+   ```
+
+   *To use Adam, you have to give the string "adam" as second parameter to the denseLayer class method update() and adjust your learning rate.* 
+
+3. **Run predictions** on unseen data using the saved model weights:
+   ```bash
+   uv run src/predict.py datasets/data_validation.csv
+   ```
+
+## Results
+
+Configured with a **`30 -> 24 -> 16 -> 2`** architecture (30 input features, two hidden layers of 24 and 16 neurons, and 2 output classes) and trained using **Adam** (`lr = 0.001`, `batch_size = 32`) with Early Stopping (`patience = 10`), the model converges smoothly without overfitting, reaching its lowest validation loss at **epoch 42** before overfitting at **epoch 52**.
+
+### Performance Metrics (Validation Set — 115 samples)
+
+| Metric | Score | Details |
+| :--- | :---: | :--- |
+| **Best Validation Loss** | `0.0534` | Categorical Cross-Entropy (Epoch 42) |
+| **Training Accuracy** | `99.12%` | 450 / 454 correct predictions |
+| **Validation Accuracy** | `99.13%` | 114 / 115 correct predictions |
+| **Validation Precision** | `100.00%` | Zero false positives |
+| **Validation Recall** | `97.67%` | 42 / 43 malignant cases detected |
+| **Validation F1-Score** | `0.9882` | Harmonic mean of precision and recall |
+
+### Learning Curves
+
+<img width="1382" height="481" alt="Training and Validation Loss and Accuracy Curves without Adam" src="https://github.com/user-attachments/assets/261d4a61-383b-4421-9533-d27c80c1f135" />
+
+<img width="1384" height="484" alt="Training and Validation Loss and Accuracy Curves with Adam" src="https://github.com/user-attachments/assets/b1d4a0bb-54c3-4f63-9bf5-16e83ba90123" />
+
+* **Loss & Accuracy Alignment**: Both training and validation curves decrease and plateau together, confirming strong generalization on unseen patient data.
+* **Clinical Relevance**: Achieving **100% precision** alongside **97.67% recall** minimizes both false alarms and missed malignant diagnoses.
 
